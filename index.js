@@ -63,3 +63,28 @@ function diffArray2(arr1, arr2) {
 }
 
 console.log(diffArray2([1, 2, 3, 5, 6], [1, 2, 3, 4, 5]));
+
+//Challenge 3 - Seek and Destroy
+
+/* Remove all elements from the initial array that are of the same value as these arguments.
+
+Use the arguments object.*/
+
+//Solution 1
+
+function destroyer(arr, ...rest) {
+  return arr.filter(val => !rest.includes(val));
+}
+
+console.log(destroyer([1, 2, 3, 4, 2, 3], 2, 3));
+
+//Solution 2
+
+function destroyer2(arr) {
+  var args = Array.from(arguments).slice(1);
+  return arr.filter(function(val) {
+    return !args.includes(val);
+  });
+}
+
+console.log(destroyer2([1, 2, 3, 4, 2, 3], 1, 4));
