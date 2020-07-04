@@ -70,7 +70,7 @@ console.log(diffArray2([1, 2, 3, 5, 6], [1, 2, 3, 4, 5]));
 
 Use the arguments object.*/
 
-//Solution 1
+//Solution 1 - Spread operator, filter, and includes
 
 function destroyer(arr, ...rest) {
   return arr.filter(val => !rest.includes(val));
@@ -78,7 +78,7 @@ function destroyer(arr, ...rest) {
 
 console.log(destroyer([1, 2, 3, 4, 2, 3], 2, 3));
 
-//Solution 2
+//Solution 2 - Arguments, indexOf, filter
 
 function destroyer2(arr) {
   var args = Array.from(arguments).slice(1);
@@ -88,3 +88,105 @@ function destroyer2(arr) {
 }
 
 console.log(destroyer2([1, 2, 3, 4, 2, 3], 1, 4));
+
+//Solution 3 - Arguments, indexOf, filter
+
+function seekAndDestroy3(arr) {
+  const args = Array.from(arguments);
+
+  function filterArr(arr) {
+    // Return true if NOT in array
+    return args.indexOf(arr) === -1;
+  }
+  return arr.filter(filterArr);
+}
+
+console.log(seekAndDestroy3([2, 3, 4, 6, 6, 'hello'], 2, 6))
+
+//Challenge 4 - Wherefore art thou
+
+/* Make a function that looks through an array of objects (first argument) and returns an array of all objects that have matching name and value pairs (second argument). Each name and value pair of the source object has to be present in the object from the collection if it is to be included in the returned array.*/
+
+//Solution 1 
+
+function whatIsInAName(collection, source) {
+ 
+  var srcKeys = Object.keys(source);
+
+  // filter the collection
+  return collection.filter(function(obj) {
+    for (var i = 0; i < srcKeys.length; i++) {
+      if (
+        !obj.hasOwnProperty(srcKeys[i]) ||
+        obj[srcKeys[i]] !== source[srcKeys[i]]
+      ) {
+        return false;
+      }
+    }
+    return true;
+  });
+}
+
+// test here
+console.log(whatIsInAName(
+  [
+    { first: "Romeo", last: "Montague" },
+    { first: "Mercutio", last: null },
+    { first: "Tybalt", last: "Capulet" }
+  ],
+  { last: "Capulet" }
+));
+
+//Solution 2 - Filter and Every methods
+
+function whatIsInAName2(collection, source) {
+
+  var srcKeys = Object.keys(source);
+
+  return collection.filter(function(obj) {
+    return srcKeys.every(function(key) {
+      return obj.hasOwnProperty(key) && obj[key] === source[key];
+    });
+  });
+}
+
+// test here
+console.log(whatIsInAName2(
+  [
+    { first: "Romeo", last: "Capulet" },
+    { first: "Mercutio", last: null },
+    { first: "Tybalt", last: "Capulet" }
+  ],
+  { last: "Capulet" }
+));
+
+//Challenge 5 - Spinal Tap Case
+/* Convert a string to spinal case. Spinal case is all-lowercase-words-joined-by-dashes.
+
+Example: spinalCase("This Is Spinal Tap") should return "this-is-spinal-tap".*/
+
+//Solution 1 - Regex, Replace, toLowerCase, Split, and Join Methods
+
+function spinalCase(str) {
+  // Replace low-upper case to low-space-uppercase
+  str = str.replace(/([a-z])([A-Z])/g, "$1 $2");
+  // Split on whitespace and underscores and join with dash
+  return str
+    .toLowerCase()
+    .split(/(?:_| )+/)
+    .join("-");
+}
+
+// test here
+console.log(spinalCase("This Is Spinal Tap"));
+
+//Solution 1 - Regex, Split, Join, and toLowerCase Methods
+function spinalCase2(str) {
+
+  return str
+    .split(/\s|_|(?=[A-Z])/)
+    .join("-")
+    .toLowerCase();
+}
+
+console.log(spinalCase2("This Is 2020 Jumanji"));
