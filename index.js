@@ -180,7 +180,7 @@ function spinalCase(str) {
 // test here
 console.log(spinalCase("This Is Spinal Tap"));
 
-//Solution 1 - Regex, Split, Join, and toLowerCase Methods
+//Solution 2 - Regex, Split, Join, and toLowerCase Methods
 function spinalCase2(str) {
 
   return str
@@ -190,3 +190,80 @@ function spinalCase2(str) {
 }
 
 console.log(spinalCase2("This Is 2020 Jumanji"));
+
+//Challenge 6 - Pig Latin
+
+/* Pig Latin is a way of altering English Words. The rules are as follows:
+
+- If a word begins with a consonant, take the first consonant or consonant cluster, move it to the end of the word, and add "ay" to it.
+
+- If a word begins with a vowel, just add "way" at the end.
+
+Translate the provided string to Pig Latin. Input strings are guaranteed to be English words in all lowercase.
+*/
+
+//Solution 1 - Mathc method, Regex, and ternary statement
+
+function translatePigLatin(str) {
+let consonantRegex = /^[^aeiou]+/;
+let newConsonants = str.match(consonantRegex)
+return newConsonants !== null
+? str
+.replace(consonantRegex,"")
+.concat(newConsonants)
+.concat("ay")
+: str.concat("way")
+}
+
+console.log(translatePigLatin("consonant"))
+
+//Solution 2 - Replace method and Regex
+
+function translatePigLatin2(str) {
+  return str
+  .replace(/^[aeiou]\w*/, "$&way")
+  .replace(/(^[^aeiou]+)(\w*)/, "$2$1ay");
+}
+
+console.log(translatePigLatin2("algorithm"))
+
+//Challenge 6 - Search and Replace
+
+/* 
+Preserve the case of the first character in the original word when you are replacing it. For example if you mean to replace the word "Book" with the word "dog", it should be replaced as "Dog"
+
+myReplace("Let us go to the store", "store", "mall") should return "Let us go to the mall".*/
+
+//Solution 1 - indexOf and Replace methods
+function myReplace(str, before, after) {
+  // Find index where before is on string
+  var index = str.indexOf(before);
+  // Check to see if the first letter is uppercase or not
+  if (str[index] === str[index].toUpperCase()) {
+    // Change the after word to be capitalized before we use it.
+    after = after.charAt(0).toUpperCase() + after.slice(1)
+  }
+  // Now replace the original str with the edited one.
+     str = str.replace(before, after)
+  return str;
+}
+
+console.log(myReplace("A quick brown fox jumped over the lazy dog", "jumped", "leaped"));
+
+//Solution 2 - Regex and substring methods
+
+function myReplace2(str, before, after) {
+  // Check if first character of argument "before" is a capital or lowercase letter and change the first character of argument "after" to match the case
+  if (/^[A-Z]/.test(before)) {
+    //change after letter to uppercase if before letter is uppercase
+    after = after[0].toUpperCase() + after.substring(1)
+  } else {
+    //change after letter to lowercase if before letter is lowercase
+    after = after[0].toLowerCase() + after.substring(1)
+  }
+
+  // return string with argument "before" replaced by argument "after" (with correct case)
+  return str.replace(before, after);
+}
+
+console.log(myReplace2("This has a spellngi error", "spellngi", "spelling"))
